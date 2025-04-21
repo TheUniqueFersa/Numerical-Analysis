@@ -104,36 +104,43 @@ A = np.array([[3, 2, -1],
               [1, 1, 1]], dtype=float)
 b = np.array([4, 8, 6], dtype=float)
 
-
-# Definir A y b
+#Requiere pivoteo
 A = np.array([[7, 0, 9],
               [9, 0, -5],
-              [0, -2, -10]], dtype=float)
+              [0, -2, 10]], dtype=float)
 b = np.array([-28, -36, 10], dtype=float)
+
+# Definir A y b
+A = np.array([[-10, 8, 2],
+              [4, 2, 0],
+              [-2, -8, -6]], dtype=float)
+b = np.array([70, 16, -82], dtype=float)
 """
 
-A, b, x = generar_sistema(3, -10, 10)
 #b = b.flatten()
 #x= x.flatten()
 
 #print(x.shape)
 #print(np.linalg.det(A))
 
+def main():
+    A, b, x = generar_sistema(3, -10, 10)
+    try:
+        # Doolittle
+        L_d, U_d = descomposicion_doolittle(A)
+        x_d = resolver_LU_doolittle(L_d, U_d, b)
+        print("Solución con Doolittle:", x_d)
 
-try:
-    # Doolittle
-    L_d, U_d = descomposicion_doolittle(A)
-    x_d = resolver_LU_doolittle(L_d, U_d, b)
-    print("Solución con Doolittle:", x_d)
+        # Crout
+        L_c, U_c = descomposicion_crout(A)
+        x_c = resolver_LU_crout(L_c, U_c, b)
+        print("Solución con Crout:", x_c)
 
-    # Crout
-    L_c, U_c = descomposicion_crout(A)
-    x_c = resolver_LU_crout(L_c, U_c, b)
-    print("Solución con Crout:", x_c)
+    except ValueError as ve:
+        print("Error de validación:", ve)
+    except ZeroDivisionError as zde:
+        print("Error de división por cero:", zde)
+    except Exception as e:
+        print("Error inesperado:", e)
 
-except ValueError as ve:
-    print("Error de validación:", ve)
-except ZeroDivisionError as zde:
-    print("Error de división por cero:", zde)
-except Exception as e:
-    print("Error inesperado:", e)
+# main()
