@@ -105,36 +105,57 @@ def resolver_LU_crout(L, U, b, P_col):
 
 # -------- EJEMPLO DE USO --------
 '''
-A = np.array([[7, 0, 9],
-              [9, 0, -5],
-              [0, -2, -10]], dtype=float)
-b = np.array([-28, -36, 10], dtype=float)
-
-
-
-A = np.array([[-2, -6, 1],
-              [6, -4, 9],
-              [4, 3, 0]], dtype=float)
-b = np.array([34, -110, -48], dtype=float)
-# Solucionada con pivoteo completo
-
-A = np.array([[-4, -5, 0],
-              [-8, -10, -10],
-              [2, 2, -8]], dtype=float)
-b = np.array([65, 40, -102], dtype=float)
-# Solucionada con pivoteo completo
-'''
-# print(A.shape)
+A = np.array([[-2, 1, 6],
+              [-7, 0, 8],
+              [7, 1, -5]], dtype=float)
+b = np.array([-10, -24, 23], dtype=float)
+# Resuelta con pivoteo completo
 
 # Falla por cero en diagonal
 A = np.array([[0, 8, -3],
               [5, 3, 7],
               [7, 0, -4]], dtype=float)
 b = np.array([-90, -15, -66], dtype=float)
+# Resuelta con pivoteo completo
 
-x_r = np.linalg.solve(A, b)
-print(f"Solición Real: {x_r}")
-# A, b, x = generar_sistema(3, -10, 10)
+A = np.array([[-2, -6, 1],
+              [6, -4, 9],
+              [4, 3, 0]], dtype=float)
+b = np.array([34, -110, -48], dtype=float)
+# Resuelta con pivoteo completo
+
+A = np.array([[-4, -5, 0],
+              [-8, -10, -10],
+              [2, 2, -8]], dtype=float)
+b = np.array([65, 40, -102], dtype=float)
+# Resuelta con pivoteo completo
+
+--- 
+
+# No se puede realizar pivoteo completo porque hay submatriz singular
+A = np.array([[4, 7, -4],
+              [1, -2, 0],
+              [4, -10, -2]], dtype=float)
+b = np.array([-37, -3, 4], dtype=float)
+
+# Solución real tiene valores muy pequeños, submatriz singular
+A = np.array([[7, 0, 9],
+              [9, 0, -5],
+              [0, -2, -10]], dtype=float)
+b = np.array([-28, -36, 10], dtype=float)
+
+# No se puede resolver por pc: submatriz singular
+A = np.array([[6, 5, 0],
+              [0, 6, 1],
+              [-9, -2, -6]], dtype=float)
+b = np.array([-22, -47, -17], dtype=float)
+'''
+# print(A.shape)
+
+
+# x_r = np.linalg.solve(A, b)
+# print(f"Solición Real: {x_r}")
+A, b, x = generar_sistema(3, -100, 100)
 
 # print(np.linalg.det(A))
 # condicion = np.linalg.cond(A)
