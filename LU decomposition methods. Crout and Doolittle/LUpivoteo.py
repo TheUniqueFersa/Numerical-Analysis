@@ -151,11 +151,16 @@ A = np.array([[6, 5, 0],
 b = np.array([-22, -47, -17], dtype=float)
 '''
 # print(A.shape)
+A = np.array([[2, -1, 4, 1, -1],
+              [-1, 3, -2, -1, 2],
+              [5, 1, 3, -4, 1],
+              [3, -2, -2, -2, 3],
+              [-4, -1, -5, 3, -4]], dtype=float)
+b = np.array([7, 1, 33, 24, -49], dtype=float)
 
-
-# x_r = np.linalg.solve(A, b)
-# print(f"Solición Real: {x_r}")
-A, b, x = generar_sistema(3, -100, 100)
+x_r = np.linalg.solve(A, b)
+print(f"Solición Real: {x_r}")
+# A, b, x = generar_sistema(3, -100, 100)
 
 # print(np.linalg.det(A))
 # condicion = np.linalg.cond(A)
