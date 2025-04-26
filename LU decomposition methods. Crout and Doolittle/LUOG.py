@@ -1,5 +1,23 @@
 import numpy as np
+# Primer bloque
+def generar_sistema(dim, li, ls, prnt=1): #dimensión, limite inferior, limite superior
+    while True:
+        A = np.random.randint(li, ls, size=(dim, dim)).astype(float)  # Se convierte aa float directamente
+        if np.linalg.det(A) != 0:
+            break  # Aseguramos que sea invertible (det != 0)
 
+    x = np.random.randint(li, ls, size=(dim,)).astype(float)  # Vector columna tipo float
+    b = A @ x  # Se genera b
+    if prnt:
+      print("Matriz A:")
+      print(A)
+      print("\nVector b:")
+      print(b)
+      print("\nSolución real x:")
+      print(x)
+    return A, b, x
+
+# Segundo bloque
 def validar_entrada(A, b):
     # A debe ser cuadrada
     if not isinstance(A, np.ndarray) or not isinstance(b, np.ndarray):
@@ -9,7 +27,9 @@ def validar_entrada(A, b):
     if A.shape[0] != b.shape[0]:
         raise ValueError("Dimensiones de A y b no coinciden")
 
-def doolittle_decomposition(A):
+
+# Tercer bloque
+def descomposicion_doolittle(A):
     validar_entrada(A, np.zeros(A.shape[0]))
     n = len(A)
     L = np.zeros((n, n))
@@ -26,7 +46,7 @@ def doolittle_decomposition(A):
             suma = sum(L[j][k] * U[k][i] for k in range(i))
             L[j][i] = (A[j][i] - suma) / U[i][i]
     return L, U
-def resolver_LU(L, U, b):
+def resolver_LU_doolitle(L, U, b):
     # validar_entrada(L, b)
     n = len(b)
     d = np.zeros(n)
@@ -40,10 +60,8 @@ def resolver_LU(L, U, b):
         x[i] = (d[i] - sum(U[i][j] * x[j] for j in range(i + 1, n))) / U[i][i]
     return x
 
-
-import numpy as np
-
-def crout_decomposition(A):
+# Cuarto bloque
+def descomposicion_crout(A):
     n = len(A)
     L = np.zeros((n, n))
     U = np.zeros((n, n))
@@ -78,65 +96,26 @@ def resolver_LU_crout(L, U, b):
 
     return x
 
-"""
-# --- Prueba con un sistema conocido ---
-A = np.array([
-    [3, 2, -1],
-    [2, -3, 4],
-    [1, 1, 1]
-], dtype=float)
+# Quinto bloque
+A = np.array([[2, -1, 4, 1, -1],
+              [-1, 3, -2, -1, 2],
+              [5, 1, 3, -4, 1],
+              [3, -2, -2, -2, 3],
+              [-4, -1, -5, 3, -4]], dtype=float)
+b = np.array([7, 1, 33, 24, -49], dtype=float)
 
-b = np.array([4, 8, 6], dtype=float)
+x_r = np.linalg.solve(A, b)
+print(f"Solición Real: {x_r}")
+# A, b, x = generar_sistema(3, -100, 100)
 
-
-A = np.array([
-    [-1, -4, 9],
-    [-1, 4, -4],
-    [0, 3, 0]
-], dtype=float)
-
-b = np.array([107, -64, -30], dtype=float)
-"""
-
-def generar_sistema(dim, li, ls): #dimensión, limite inferior, limite superior
-    while True:
-        A = np.random.randint(li, ls, size=(dim, dim)).astype(float)  # Convertimos a float directamente
-        if np.linalg.det(A) != 0:
-            break  # Aseguramos que sea invertible (det ≠ 0)
-
-    x = np.random.randint(li, ls, size=(dim,)).astype(float)  # Vector columna tipo float
-    b = A @ x  # Generamos b como vector columna también
-    return A, b, x
-
-
-A, b, x = generar_sistema(3, -10, 10)
-#b = b.flatten()
-#x= x.flatten()
-
-print(x.shape)
-
-print("Matriz A:")
-print(A)
-print("\nVector b:")
-print(b)
-print("\nSolución real x:")
-print(x)
-
-# Definir A y b
-"""
-A = np.array([[3, 2, -1],
-              [2, -3, 4],
-              [1, 1, 1]], dtype=float)
-b = np.array([4, 8, 6], dtype=float)
-"""
 try:
     # Doolittle
-    L_d, U_d = doolittle_decomposition(A)
-    x_d = resolver_LU(L_d, U_d, b)
+    L_d, U_d = descomposicion_doolittle(A)
+    x_d = resolver_LU_doolitle(L_d, U_d, b)
     print("Solución con Doolittle:", x_d)
 
     # Crout
-    L_c, U_c = crout_decomposition(A)
+    L_c, U_c = descomposicion_crout(A)
     x_c = resolver_LU_crout(L_c, U_c, b)
     print("Solución con Crout:", x_c)
 
